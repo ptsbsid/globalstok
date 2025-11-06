@@ -375,7 +375,22 @@ function App() {
         </div>
       </header>
 
+      {/* Offline banner */}
+      {import.meta.env.VITE_FIREBASE_PROJECT_ID && !isFirebaseConnected && !isLoading && (
+        <div className="bg-yellow-500/10 text-yellow-300 border border-yellow-600/40 px-4 py-2 text-sm">
+          Mode offline: perubahan disimpan ke localStorage dan akan disinkronkan saat koneksi kembali.
+        </div>
+      )}
+
       <main id="main-content" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Loading overlay */}
+        {isLoading && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
+            <div className="animate-spin rounded-full h-10 w-10 border-4 border-amber-500 border-t-transparent mr-3" />
+            <div className="text-amber-200 font-semibold">Memuat data...</div>
+          </div>
+        )}
+
         {/* Total Stock Summary */}
         <div className="mb-8">
           <TotalStockSummary totalStock={totalStock} totalCapacity={totalCapacity} />
@@ -390,16 +405,22 @@ function App() {
               <span>Monitoring real-time</span>
             </div>
           </div>
-          
-          <div className="grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-6">
-            {warehouses.map(warehouse => (
-              <WarehouseCard
-                key={warehouse.id}
-                warehouse={warehouse}
-                onTankUpdate={handleTankUpdate}
-              />
-            ))}
-          </div>
+
+          {warehouses.length === 0 && !isLoading ? (
+            <div className="border border-gray-700/60 rounded-lg p-6 bg-gray-800/40 text-gray-300">
+              Belum ada data gudang. Anda bisa import JSON atau reset ke data awal.
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-6">
+              {warehouses.map(warehouse => (
+                <WarehouseCard
+                  key={warehouse.id}
+                  warehouse={warehouse}
+                  onTankUpdate={handleTankUpdate}
+                />
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Quick Stats */}

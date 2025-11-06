@@ -1,0 +1,14 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // PROD-READY TEMPLATE:
+    // - Read allowed for everyone (optional: set to auth != null to restrict)
+    // - Write only for authenticated users
+    match /warehouses/{warehouseId} {
+      allow read: if true;                 // ganti ke request.auth != null untuk restrict
+      allow write: if request.auth != null;
+    }
+  }
+}
+
+

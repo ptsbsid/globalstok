@@ -21,7 +21,10 @@ export const calculateTotalCapacity = (warehouses: Warehouse[]): StockLevel => {
 };
 
 export const calculateStockPercentage = (current: number, capacity: number): number => {
-  return Math.round((current / capacity) * 100);
+  if (!capacity || capacity <= 0) return 0;
+  const percentage = (current / capacity) * 100;
+  if (!Number.isFinite(percentage)) return 0;
+  return Math.round(Math.max(0, Math.min(100, percentage)));
 };
 
 export const formatStockAmount = (amount: number): string => {

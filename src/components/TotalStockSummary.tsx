@@ -12,11 +12,18 @@ export const TotalStockSummary: React.FC<TotalStockSummaryProps> = ({
   totalStock, 
   totalCapacity 
 }) => {
-  const ucoPercentage = Math.round((totalStock.uco / totalCapacity.uco) * 100);
-  const cpoPercentage = Math.round((totalStock.cpo / totalCapacity.cpo) * 100);
+  const safePct = (current: number, cap: number) => {
+    if (!cap || cap <= 0) return 0;
+    const pct = (current / cap) * 100;
+    if (!Number.isFinite(pct)) return 0;
+    return Math.round(Math.max(0, Math.min(100, pct)));
+  };
+
+  const ucoPercentage = safePct(totalStock.uco, totalCapacity.uco);
+  const cpoPercentage = safePct(totalStock.cpo, totalCapacity.cpo);
   const totalKg = totalStock.uco + totalStock.cpo;
   const totalCapacityKg = totalCapacity.uco + totalCapacity.cpo;
-  const overallPercentage = Math.round((totalKg / totalCapacityKg) * 100);
+  const overallPercentage = safePct(totalKg, totalCapacityKg);
 
   return (
     <div className="bg-gradient-to-r from-amber-500/20 to-orange-500/20 rounded-xl p-6 border border-amber-500/30 shadow-xl">

@@ -1,10 +1,12 @@
-import { 
-  collection, 
-  doc, 
-  getDoc, 
-  setDoc, 
-  onSnapshot, 
-  Timestamp 
+import {
+  collection,
+  doc,
+  getDocs,
+  setDoc,
+  onSnapshot,
+  Timestamp,
+  QuerySnapshot,
+  DocumentData
 } from 'firebase/firestore';
 import { db } from '../config/firebase';
 import { Warehouse } from '../types/warehouse';
@@ -73,28 +75,9 @@ export const saveWarehousesToFirestore = async (warehouses: Warehouse[]): Promis
 export const loadWarehousesFromFirestore = async (): Promise<Warehouse[] | null> => {
   try {
     const warehousesRef = collection(db, COLLECTION_NAME);
-    const warehouses: Warehouse[] = [];
-    
-    // Get all warehouse documents
-    const snapshot = await getDoc(doc(warehousesRef, 'wh-ploso'));
-    if (snapshot.exists()) {
-      // If we have at least one document, load all
-      const warehouseIds = ['wh-ploso', 'wh-kemiri', 'wh-safenlock'];
-      
-      for (const id of warehouseIds) {
-        const docRef = doc(warehousesRef, id);
-        const docSnap = await getDoc(docRef);
-        
-        if (docSnap.exists()) {
-          const data = convertTimestampToDate(docSnap.data());
-          warehouses.push(data as Warehouse);
-        }
-      }
-      
-      return warehouses.length > 0 ? warehouses : null;
-    }
-    
-    return null;
+    const snapshot = await getDocs(warehousesRef);
+    const warehouses: Warehouse[] = snapshot.docs.map(d => convertTimestampToDate(d.data()) as Warehouse);
+    return warehouses.length > 0 ? warehouses : null;
   } catch (error) {
     console.error('Error loading warehouses from Firestore:', error);
     return null;
@@ -106,43 +89,20 @@ export const subscribeToWarehouses = (
   callback: (warehouses: Warehouse[]) => void
 ): (() => void) => {
   const warehousesRef = collection(db, COLLECTION_NAME);
-  const warehouses: Warehouse[] = [];
-  const warehouseIds = ['wh-ploso', 'wh-kemiri', 'wh-safenlock'];
-  
-  const unsubscribers: (() => void)[] = [];
-  
-  warehouseIds.forEach(id => {
-    const docRef = doc(warehousesRef, id);
-    const unsubscribe = onSnapshot(docRef, (docSnap) => {
-      if (docSnap.exists()) {
-        const data = convertTimestampToDate(docSnap.data());
-        const index = warehouses.findIndex(w => w.id === id);
-        
-        if (index >= 0) {
-          warehouses[index] = data as Warehouse;
-        } else {
-          warehouses.push(data as Warehouse);
-        }
-        
-        // Sort to maintain order
-        warehouses.sort((a, b) => {
-          const order = ['wh-ploso', 'wh-kemiri', 'wh-safenlock'];
-          return order.indexOf(a.id) - order.indexOf(b.id);
-        });
-        
-        callback([...warehouses]);
-      }
-    }, (error) => {
-      console.error('Error in real-time subscription:', error);
-    });
-    
-    unsubscribers.push(unsubscribe);
-  });
-  
-  // Return unsubscribe function
-  return () => {
-    unsubscribers.forEach(unsub => unsub());
-  };
+  const unsubscribe = onSnapshot(
+    warehousesRef,
+    (snapshot: QuerySnapshot<DocumentData>) => {
+      const warehouses: Warehouse[] = snapshot.docs
+        .map(docSnap => convertTimestampToDate(docSnap.data()) as Warehouse)
+        .sort((a, b) => a.name.localeCompare(b.name));
+      callback(warehouses);
+    },
+    (error) => {
+      console.error('Error in real-time collection subscription:', error);
+    }
+  );
+
+  return unsubscribe;
 };
 
 // Initialize Firestore with default data if empty
