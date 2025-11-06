@@ -31,13 +31,13 @@ export const TankCard: React.FC<TankCardProps> = ({ tank, onUpdate }) => {
   }
 
   return (
-    <div className="bg-gray-800/60 rounded-lg p-4 border border-gray-700/50 hover:border-amber-500/30 transition-all duration-200">
+    <div className="bg-gray-800/60 rounded-lg p-3 md:p-4 border border-gray-700/50 hover:border-amber-500/30 transition-all duration-200">
       <div className="flex items-start justify-between mb-3">
         <div className="flex items-center space-x-2">
           <div className="p-1.5 bg-amber-500/20 rounded-md">
             <Droplets className="w-4 h-4 text-amber-400" />
           </div>
-          <h4 className="text-sm font-bold text-white">{tank.name}</h4>
+          <h4 className="text-sm md:text-base font-bold text-white">{tank.name}</h4>
         </div>
         <button
           onClick={() => onUpdate(tank)}

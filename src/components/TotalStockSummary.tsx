@@ -26,28 +26,28 @@ export const TotalStockSummary: React.FC<TotalStockSummaryProps> = ({
   const overallPercentage = safePct(totalKg, totalCapacityKg);
 
   return (
-    <div className="bg-gradient-to-r from-amber-500/20 to-orange-500/20 rounded-xl p-6 border border-amber-500/30 shadow-xl">
-      <div className="flex items-center space-x-3 mb-6">
+    <div className="bg-gradient-to-r from-amber-500/20 to-orange-500/20 rounded-xl p-4 md:p-6 border border-amber-500/30 shadow-xl">
+      <div className="flex items-center space-x-3 mb-4 md:mb-6">
         <div className="p-2 bg-amber-500/30 rounded-lg">
-          <BarChart3 className="w-6 h-6 text-amber-400" />
+          <BarChart3 className="w-5 h-5 md:w-6 md:h-6 text-amber-400" />
         </div>
         <div>
-          <h2 className="text-xl font-bold text-white">Ringkasan Total Stok</h2>
-          <p className="text-amber-200 text-sm">Gabungan dari semua gudang</p>
+          <h2 className="text-lg md:text-xl font-bold text-white">Ringkasan Total Stok</h2>
+          <p className="text-amber-200 text-xs md:text-sm">Gabungan dari semua gudang</p>
         </div>
         <div className="ml-auto flex items-center space-x-2 text-amber-400">
-          <TrendingUp className="w-5 h-5" />
-          <span className="text-2xl font-bold">{overallPercentage}%</span>
+          <TrendingUp className="w-4 h-4 md:w-5 md:h-5" />
+          <span className="text-xl md:text-2xl font-bold">{overallPercentage}%</span>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
         <div className="bg-gray-800/50 rounded-lg p-4 border border-gray-700">
           <div className="flex items-center space-x-2 mb-2">
-            <Droplets className="w-5 h-5 text-blue-400" />
-            <span className="text-sm font-medium text-gray-300">Used Cooking Oil</span>
+            <Droplets className="w-4 h-4 md:w-5 md:h-5 text-blue-400" />
+            <span className="text-sm md:text-base font-medium text-gray-300">Used Cooking Oil</span>
           </div>
-          <div className="text-2xl font-bold text-white mb-1">
+          <div className="text-xl md:text-2xl font-bold text-white mb-1">
             {formatStockAmount(totalStock.uco)}
           </div>
           <div className="w-full bg-gray-700 rounded-full h-2 mt-3">
@@ -60,10 +60,10 @@ export const TotalStockSummary: React.FC<TotalStockSummaryProps> = ({
 
         <div className="bg-gray-800/50 rounded-lg p-4 border border-gray-700">
           <div className="flex items-center space-x-2 mb-2">
-            <Droplets className="w-5 h-5 text-green-400" />
-            <span className="text-sm font-medium text-gray-300">Crude Palm Oil</span>
+            <Droplets className="w-4 h-4 md:w-5 md:h-5 text-green-400" />
+            <span className="text-sm md:text-base font-medium text-gray-300">Crude Palm Oil</span>
           </div>
-          <div className="text-2xl font-bold text-white mb-1">
+          <div className="text-xl md:text-2xl font-bold text-white mb-1">
             {formatStockAmount(totalStock.cpo)}
           </div>
           <div className="w-full bg-gray-700 rounded-full h-2 mt-3">

@@ -312,20 +312,20 @@ function App() {
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
       {/* Header */}
       <header className="bg-gray-800/50 backdrop-blur-sm border-b border-gray-700/50 sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-14 md:h-16">
             <div className="flex items-center space-x-3">
               <div className="p-2 bg-amber-500/20 rounded-lg">
                 <Factory className="w-8 h-8 text-amber-400" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-white">Sistem Manajemen Stok Minyak</h1>
-                <p className="text-sm text-gray-400">Kontrol Stok Gudang Minyak Goreng</p>
+                <h1 className="text-lg md:text-xl font-bold text-white">Sistem Manajemen Stok Minyak</h1>
+                <p className="text-xs md:text-sm text-gray-400">Kontrol Stok Gudang Minyak Goreng</p>
               </div>
             </div>
             
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2 text-sm text-gray-400">
+            <div className="flex items-center space-x-3 md:space-x-4">
+              <div className="flex items-center space-x-2 text-xs md:text-sm text-gray-400">
                 <Calendar className="w-4 h-4" />
                 <span>{new Date().toLocaleDateString('id-ID')}</span>
               </div>
@@ -382,7 +382,7 @@ function App() {
         </div>
       )}
 
-      <main id="main-content" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main id="main-content" className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 md:py-8">
         {/* Loading overlay */}
         {isLoading && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
@@ -392,15 +392,15 @@ function App() {
         )}
 
         {/* Total Stock Summary */}
-        <div className="mb-8">
+        <div className="mb-6 md:mb-8">
           <TotalStockSummary totalStock={totalStock} totalCapacity={totalCapacity} />
         </div>
 
         {/* Warehouses Grid */}
         <div className="mb-8">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-white">Lokasi Gudang</h2>
-            <div className="flex items-center space-x-2 text-sm text-gray-400">
+          <div className="flex items-center justify-between mb-4 md:mb-6">
+            <h2 className="text-xl md:text-2xl font-bold text-white">Lokasi Gudang</h2>
+            <div className="hidden sm:flex items-center space-x-2 text-sm text-gray-400">
               <RefreshCw className="w-4 h-4" />
               <span>Monitoring real-time</span>
             </div>
@@ -411,7 +411,7 @@ function App() {
               Belum ada data gudang. Anda bisa import JSON atau reset ke data awal.
             </div>
           ) : (
-            <div className="grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4 md:gap-6">
               {warehouses.map(warehouse => (
                 <WarehouseCard
                   key={warehouse.id}
@@ -424,7 +424,7 @@ function App() {
         </div>
 
         {/* Quick Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
           <div className="bg-gray-800/50 rounded-lg p-4 border border-gray-700">
             <div className="text-2xl font-bold text-blue-400">{warehouses.length}</div>
             <div className="text-sm text-gray-400">Gudang Aktif</div>
